@@ -1,52 +1,51 @@
 import java.time.*;
 import javax.swing.*;
+import java.text.DecimalFormat;
 
 public class uurLoonStopwatch {
 
-//*********** Stap 6 Velden bouwen om de Activiteit en het Uurloon in te vullen
-//    We gaan nu gebruik maken van een Swing Textfields om een veld te maken voor:
-//      * de activiteit
-//		* het uurloon
-//		* een outputveld waar de taken komen te staan
-//		* ook geven we alle velden labels
-//		----------------------------------------
-//    JTextField activiteitVeld = new JTextField();
-//		activiteitVeld.setBounds(30,150,100, 40);
+//********** Stap 7 - Nu willen we dingen gaan invoeren en op de lijst krijgen EN we willen de tijdsmeting koppelen aan
+//* 			het uurloon, zodat we kunnen zien hoeveel we per taak verdiend hebben
+//		--------------------------------------------------
+//    String activiteit = activiteitVeld.getText();
+//        System.out.println(activiteit);
+//        ----------------------------------------------
+//    run en nu zie je dat je invoer in de console verschijnt. Dan is het nu zaak het Uurloon ook hier te krijgen
+//    en te zorgen dat het in een rekenbaar type komt, in dit geval een double
+//        ------------------------------------------------
+//    String brutoUurloon = uurLoon.getText();
+//    double loon = Double.parseDouble(brutoUurloon);
+//		------------------------------------------------
+//    nu willen we zorgen dat deze informatie in het Textarea verschijnt en dit doen we daar de textArea aan te roepen
+//    en daar de text in te plaatsen met setText
+//		---------------------------------------------------
+//                textArea.setText(activiteit + " met een uurloon van " + brutoUurloon + "\n");
+//		---------------------------------------------------
+//    je ziet nu dat het vorige item steeds weggehaald wordt, en dat willen we niet, dus daarom voegen we dit toe:
+//            ----------------------------------------------------
+//            textArea.setText(textArea.getText() + activiteit + " met een uurloon van " + brutoUurloon + "\n");
+//		----------------------------------------------------
+//    We hebben nu in de terminal al de tijdmeting staan (zegmaar de duur per taak) en die willen we ook per taak laten zien
+//		----------------------------------------------------
+//                textArea.setText(textArea.getText() + activiteit + " met een uurloon van " + loon + " : " + tijdsVerschil.getSeconds() + " seconden " + "\n");
+//		----------------------------------------------------
+//    nu wil je nog zien hoeveel je per taak hebt verdiend en dat doe je door het uurloon om te rekenen naar loon per seconden
+//    en dan te vermenigvuldigen met het gemeten aantal seconden.
+//		---------------------------------------------------
+//                lijst.setText(lijst.getText() + activiteit + " met een uurloon van " + loon + " : " + tijdsVerschil.getSeconds() + " seconden gewerkt en " + ((loon/3600) * tijdsVerschil.getSeconds()) + " verdiend\n");
+//		---------------------------------------------------
+//    nu heb je wel heel veel getallen achter de komma, dat kan wel wat mooier
+//		---------------------------------------------------
+//                import java.text.DecimalFormat;
+//    private static DecimalFormat df = new DecimalFormat("0.00");
 //
-//		kader.add(activiteitVeld);
-//		------------------------------------------
-//    nu draaien en dan zien we het veld
-//		------------------------------------------
-//    JTextField uurLoon = new JTextField(10);
-//		uurLoon.setBounds(30,200,100, 40);
+//    long aantalSeconden = tijdsVerschil.getSeconds();
+//    String verdiendText = df.format((loon/3600) * aantalSeconden);
 //
-//		kader.add(uurLoon);
-//		-------------------------------------------
-//    nu draaien en dan zien we het tweede veld eronder.
-//    Nu willen we een tekstblok maken waarin we de lijst maken van de taken en
-//    de hoeveelheid seconden.
-//		-------------------------------------------
-//    JTextArea textArea = new JTextArea(50, 200);
-//		textArea.setBounds(30, 250, 700, 200);
-//
-//		kader.add(textArea);
-//		-------------------------------------------
-//    nu draaien en dan zien we een tekstarea eronder. Nu zouden wat labels nog wel heel handig zijn
-//		----------------------------------------------
-//    JLabel activiteitLabel = new JLabel("Voer hier de activiteit in");
-//		activiteitLabel.setBounds(150,150,200,40);
-//
-//		kader.add(activiteitLabel);
-//		----------------------------------------------
-//    en nu nog voor het uurloon
-//		----------------------------------------------
-//    JLabel uurLoonLabel = new JLabel("Voer hier het uurloon in met een . ");
-//		uurLoonLabel.setBounds(150,200,200,40);
-//
-//		kader.add(uurLoonLabel)
-//            ------------------------------------------------
-//    en dan hebben we nu de velden in onze GUI uiteengezet
+//		lijst.setText(lijst.getText() + activiteit + " met een uurloon van " + loon + " : " + aantalSeconden + " seconden gewerkt en " + verdiendText + " verdiend\n");
+//		----------------------------------------------------------
 
+    private static DecimalFormat df = new DecimalFormat("0.00");
 
     public static void main (String[] args){
 
@@ -58,26 +57,39 @@ public class uurLoonStopwatch {
         knop.setBounds(30,100,120, 40);
 
         JTextField activiteitVeld = new JTextField();
-		activiteitVeld.setBounds(30,150,100, 40);
+        activiteitVeld.setBounds(30,150,100, 40);
 
         JTextField uurLoon = new JTextField(10);
-		uurLoon.setBounds(30,200,100, 40);
+        uurLoon.setBounds(30,200,100, 40);
 
         JTextArea lijst = new JTextArea(50, 200);
-		lijst.setBounds(30, 250, 700, 200);
+        lijst.setBounds(30, 250, 700, 200);
 
         JLabel activiteitLabel = new JLabel("Voer hier de activiteit in");
-		activiteitLabel.setBounds(150,150,200,40);
+        activiteitLabel.setBounds(150,150,200,40);
 
         JLabel uurLoonLabel = new JLabel("Voer hier het uurloon in met een . ");
-    	uurLoonLabel.setBounds(150,200,200,40);
+        uurLoonLabel.setBounds(150,200,200,40);
 
         knop.addActionListener(e -> {
-        System.out.println("knop gedrukt");
-        klok.eind = LocalDateTime.now();
-        Duration tijdsVerschil = Duration.between(klok.start, klok.eind);
-        System.out.println("Het verschil is : " + tijdsVerschil);
-        klok.start = klok.eind;
+            String activiteit = activiteitVeld.getText();
+            System.out.println(activiteit);
+
+            String brutoUurloon = uurLoon.getText();
+            double loon = Double.parseDouble(brutoUurloon);
+
+
+            System.out.println("knop gedrukt");
+            klok.eind = LocalDateTime.now();
+            Duration tijdsVerschil = Duration.between(klok.start, klok.eind);
+            System.out.println("Het verschil is : " + tijdsVerschil);
+            klok.start = klok.eind;
+
+            long aantalSeconden = tijdsVerschil.getSeconds();
+            String verdiendText = df.format((loon/3600) * aantalSeconden);
+
+            lijst.setText(lijst.getText() + activiteit + " met een uurloon van " + loon + " : " + aantalSeconden + " seconden gewerkt en " + verdiendText + " verdiend\n");
+
         });
 
 
