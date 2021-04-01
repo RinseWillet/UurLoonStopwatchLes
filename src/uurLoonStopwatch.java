@@ -2,20 +2,18 @@ import java.time.*;
 
 public class uurLoonStopwatch {
 
-//    Stap 2 - tijd is dus heel belangrijk in deze, dus we beginnen met de LocalDate en LocatDateTime functie
-//	- laten zien docs
-//	- laten zien: import java.time.LocalDateTime;
-//	- laten zien: System.out.println(LocalDateTime.now());
+// ********** Stap 3 Beginnen met het opzetten van een class Tijdsmeting waar we het tijdsmeten gaan doen
+//        -------------------------------------------------
 //
-//    Om tijdsduur tussen twee tijdstippen te berekenen heb je een Duration nodig
 //
-//	- laten zien: Duration - docs
-//	- laten zien: import java.time.Duration -> class om lengte tussen twee tijdstippen te berekenen - vooral geschikt voor kortere tijdspannes
-//    Period bestaat ook, maar die is eerder bedoeld om aantal dagen, maanden en jaren te berekenen
+//        System.out.println(klok.eind);     -----> null, want die is enkel gedeclareerd en nog niet ingevuld.
+//	 LET OP HET TIJDSVERSCHIL TUSSEN DIRECT AANROEPEN EN VIA HET TIJDSMETING OBJECT
 //
-//    voorbeeld met LocalTime :
+//
+
 
     public static void main (String[] args){
+
 
         System.out.println("Klaar voor de start");
         LocalTime tijdStip1 = LocalTime.of(8,5,10);
@@ -36,5 +34,16 @@ public class uurLoonStopwatch {
 
         System.out.println("het tweede tijdsverschil is : " + tijdsVerschil2);
         System.out.println("het tijdsverschil in dagen in : " + tijdsVerschil3);
+
+        System.out.println(LocalDateTime.now()); ////tijdstip direct aangeroepen
+        tijdsMeting klok = new tijdsMeting();
+        System.out.println(klok.start);
+        System.out.println(klok.eind);
     }
 }
+
+class tijdsMeting {
+    LocalDateTime start = LocalDateTime.now();
+    LocalDateTime eind;
+}
+
