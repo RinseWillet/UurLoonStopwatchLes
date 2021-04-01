@@ -4,48 +4,47 @@ import java.text.DecimalFormat;
 
 public class uurLoonStopwatch {
 
-//********** Stap 7 - Nu willen we dingen gaan invoeren en op de lijst krijgen EN we willen de tijdsmeting koppelen aan
-//* 			het uurloon, zodat we kunnen zien hoeveel we per taak verdiend hebben
-//		--------------------------------------------------
-//    String activiteit = activiteitVeld.getText();
-//        System.out.println(activiteit);
-//        ----------------------------------------------
-//    run en nu zie je dat je invoer in de console verschijnt. Dan is het nu zaak het Uurloon ook hier te krijgen
-//    en te zorgen dat het in een rekenbaar type komt, in dit geval een double
-//        ------------------------------------------------
-//    String brutoUurloon = uurLoon.getText();
-//    double loon = Double.parseDouble(brutoUurloon);
-//		------------------------------------------------
-//    nu willen we zorgen dat deze informatie in het Textarea verschijnt en dit doen we daar de textArea aan te roepen
-//    en daar de text in te plaatsen met setText
-//		---------------------------------------------------
-//                textArea.setText(activiteit + " met een uurloon van " + brutoUurloon + "\n");
-//		---------------------------------------------------
-//    je ziet nu dat het vorige item steeds weggehaald wordt, en dat willen we niet, dus daarom voegen we dit toe:
-//            ----------------------------------------------------
-//            textArea.setText(textArea.getText() + activiteit + " met een uurloon van " + brutoUurloon + "\n");
-//		----------------------------------------------------
-//    We hebben nu in de terminal al de tijdmeting staan (zegmaar de duur per taak) en die willen we ook per taak laten zien
-//		----------------------------------------------------
-//                textArea.setText(textArea.getText() + activiteit + " met een uurloon van " + loon + " : " + tijdsVerschil.getSeconds() + " seconden " + "\n");
-//		----------------------------------------------------
-//    nu wil je nog zien hoeveel je per taak hebt verdiend en dat doe je door het uurloon om te rekenen naar loon per seconden
-//    en dan te vermenigvuldigen met het gemeten aantal seconden.
-//		---------------------------------------------------
-//                lijst.setText(lijst.getText() + activiteit + " met een uurloon van " + loon + " : " + tijdsVerschil.getSeconds() + " seconden gewerkt en " + ((loon/3600) * tijdsVerschil.getSeconds()) + " verdiend\n");
-//		---------------------------------------------------
-//    nu heb je wel heel veel getallen achter de komma, dat kan wel wat mooier
-//		---------------------------------------------------
-//                import java.text.DecimalFormat;
-//    private static DecimalFormat df = new DecimalFormat("0.00");
+//*********** Stap 8 Totaalverdiend toevoegen
+//    nu is het wat netter. Als allerlaatste willen we natuurlijk ook een idee hebben van hoeveel we nu in totaal
+//    verdiend hebben, dus daar voegen we een textfield toe onder de text area, met ook een label:
+//            ------------------------------------------------------------------
+//    JLabel totaalLabel = new JLabel("Totaal verdiend: ");
+//		totaalLabel.setBounds(30,460,100,40);
 //
-//    long aantalSeconden = tijdsVerschil.getSeconds();
-//    String verdiendText = df.format((loon/3600) * aantalSeconden);
+//    JTextField totaal = new JTextField(20);
+//		totaal.setBounds(150, 460, 300, 40);
 //
-//		lijst.setText(lijst.getText() + activiteit + " met een uurloon van " + loon + " : " + aantalSeconden + " seconden gewerkt en " + verdiendText + " verdiend\n");
-//		----------------------------------------------------------
+//		kader.add(totaalLabel);
+//		kader.add(totaal);
+//		---------------------------------------------------------------
+//    nu draaien en dan zie je het veld en de label verschijnen. Nu willen we nog een variabele maken waarin
+//    het totaal verdiende bedrag wordt bijgehouden:
+//            ---------------------------------------------------------------
+//    static double totaalVerdiend = 0;
+//		--------------------------------------------------------------
+//    nu willen we iedere keer het verdiende loon gaan optellen bij deze variabele
+//		--------------------------------------------------------------
+//    totaalVerdiend = totaalVerdiend + ((loon/3600) * aantalSeconden);
+//		--------------------------------------------------------------
+//    Let op: we hebben hier dus opnieuw het Loon uitgerekend, maar omdat de eerdere lijn hem via die formatter in
+//    een String dwingt, moeten we nog eens uitrekeken. Alternatief is de string te parsen als een double:
+//            -----------------------------------------------------------------
+//    totaalVerdiend = totaalVerdiend + Double.parseDouble(verdiendText);
+//		-----------------------------------------------------------------
+//    het allerlaastste wat we nu moeten doen is deze variabelen aan het TextField gaan toewijzen onderaan:
+//            -------------------------------------------------------------------
+//            totaal.setText(df.format(totaalVerdiend) + " Euro verdiend!" );
+//		-------------------------------------------------------------------
+//    Draaien en klaar, dank voor de aandacht :-)
+//            - Challenges:
+//            - maak een reset-knop
+//			- zet dit om naar JavaFX of naar een FrontEnd
+//			- zorg dat er weekend-toeslagen berekend worden
+//
+//	 */
 
     private static DecimalFormat df = new DecimalFormat("0.00");
+    static double totaalVerdiend = 0;
 
     public static void main (String[] args){
 
@@ -71,13 +70,19 @@ public class uurLoonStopwatch {
         JLabel uurLoonLabel = new JLabel("Voer hier het uurloon in met een . ");
         uurLoonLabel.setBounds(150,200,200,40);
 
+
+        JLabel totaalLabel = new JLabel("Totaal verdiend: ");
+        totaalLabel.setBounds(30,460,100,40);
+
+        JTextField totaal = new JTextField(20);
+        totaal.setBounds(150, 460, 300, 40);
+
         knop.addActionListener(e -> {
             String activiteit = activiteitVeld.getText();
             System.out.println(activiteit);
 
             String brutoUurloon = uurLoon.getText();
             double loon = Double.parseDouble(brutoUurloon);
-
 
             System.out.println("knop gedrukt");
             klok.eind = LocalDateTime.now();
@@ -88,8 +93,13 @@ public class uurLoonStopwatch {
             long aantalSeconden = tijdsVerschil.getSeconds();
             String verdiendText = df.format((loon/3600) * aantalSeconden);
 
+            totaalVerdiend = totaalVerdiend + ((loon/3600) * aantalSeconden);
+            //of
+            // totaalVerdiend = totaalVerdiend + Double.parseDouble(verdiendText);
+
             lijst.setText(lijst.getText() + activiteit + " met een uurloon van " + loon + " : " + aantalSeconden + " seconden gewerkt en " + verdiendText + " verdiend\n");
 
+            totaal.setText(df.format(totaalVerdiend) + " Euro verdiend!" );
         });
 
 
@@ -102,6 +112,8 @@ public class uurLoonStopwatch {
         kader.add(lijst);
         kader.add(activiteitLabel);
         kader.add(uurLoonLabel);
+        kader.add(totaalLabel);
+        kader.add(totaal);
         kader.setSize(1000,600);
         kader.setLayout(null);
         kader.setVisible(true);
